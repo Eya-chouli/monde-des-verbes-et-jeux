@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>Roue de Conjugaison</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to right, #f3a8f7, #ffb6c1); /* Couleur de fond douce et vive */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+    }
+
+    h1 {
+      color: #2e1f47;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      font-size: 3em;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      border: 10px solid #ff9800;
+      background-color: #ffffff;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      margin-top: 50px;
+    }
+
+    .wheel {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-origin: center;
+      transition: transform 4s ease-out;
+      clip-path: circle(50% at 50% 50%);
+    }
+
+    .wheel .section {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      background-color: #ff9800;
+      clip-path: polygon(100% 100%, 100% 0, 0 0, 0 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5em;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      transform-origin: 100% 100%;
+    }
+
+    /* Rotation des sections de la roue */
+    .wheel .section:nth-child(1) { transform: rotate(0deg); background-color: #f44336; }
+    .wheel .section:nth-child(2) { transform: rotate(60deg); background-color: #e91e63; }
+    .wheel .section:nth-child(3) { transform: rotate(120deg); background-color: #9c27b0; }
+    .wheel .section:nth-child(4) { transform: rotate(180deg); background-color: #673ab7; }
+    .wheel .section:nth-child(5) { transform: rotate(240deg); background-color: #3f51b5; }
+    .wheel .section:nth-child(6) { transform: rotate(300deg); background-color: #009688; }
+
+    /* Sticker des élèves */
+    .sticker {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-size: cover;
+      border-radius: 50%;
+    }
+
+    .sticker-1 {
+      background-image: url('https://i.pinimg.com/originals/0d/3e/0b/0d3e0be635c0cdb3e6d6e2a687d8488a.png');
+      top: 10px;
+      left: 30px;
+    }
+
+    .sticker-2 {
+      background-image: url('https://i.pinimg.com/originals/a7/63/19/a76319e1ed17cc7b200f649ce348b8a6.png');
+      top: 10px;
+      right: 30px;
+    }
+
+    .sticker-3 {
+      background-image: url('https://i.pinimg.com/originals/ab/f5/cb/abf5cb947bc903b5b3e7b00ba8000c6e.png');
+      bottom: 10px;
+      left: 30px;
+    }
+
+    .sticker-4 {
+      background-image: url('https://i.pinimg.com/originals/3f/9f/71/3f9f71eebd0bda509e9ed57f51d89739.png');
+      bottom: 10px;
+      right: 30px;
+    }
+
+    .button-container {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .button {
+      padding: 15px 30px;
+      background-color: #ff5722;
+      color: white;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .button:hover {
+      background-color: #f6a9f5;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #2e1f47;
+    }
+
+    .input-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .input-container input {
+      padding: 10px;
+      font-size: 1.2em;
+      border: 2px solid #ff5722;
+      border-radius: 5px;
+    }
+
+    .input-container button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background-color: #ff5722;
+      color: white;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .input-container button:hover {
+      background-color: #f6a9f5;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Roue de Conjugaison</h1>
+  <div class="container">
+    <div class="wheel-container">
+      <div class="wheel">
+        <div class="section">Je</div>
+        <div class="section">Tu</div>
+        <div class="section">Il/Elle</div>
+        <div class="section">Nous</div>
+        <div class="section">Vous</div>
+        <div class="section">Ils/Elles</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="button-container">
+      <button class="button" onclick="spinWheel()">Tourner la roue</button>
+      <div class="result" id="result"></div>
+    </div>
+    
+    <!-- Sélecteur pour choisir le temps -->
+    <div class="input-container">
+      <label for="timeSelect">Choisissez le temps :</label>
+      <select id="timeSelect">
+        <option value="présent">Présent</option>
+        <option value="passé_composé">Passé Composé</option>
+      </select>
+    </div>
+
+    <div class="input-container" id="inputContainer" style="display: none;">
+      <label for="conjugationAnswer">Conjuguez le verbe : </label>
+      <input type="text" id="conjugationAnswer" placeholder="Réponse...">
+      <button onclick="checkAnswer()">Vérifier</button>
+    </div>
+  </div>
+
+  <script>
+    // Liste des verbes avec conjugaison au présent et passé composé
+    const verbs = {
+      "prendre": {
+        "présent": ["prends", "prends", "prend", "prenons", "prenez", "prennent"],
+        "passé_composé": ["ai pris", "as pris", "a pris", "avons pris", "avez pris", "ont pris"]
+      },
+      "apprendre": {
+        "présent": ["apprends", "apprends", "apprend", "apprenons", "apprenez", "apprennent"],
+        "passé_composé": ["ai appris", "as appris", "a appris", "avons appris", "avez appris", "ont appris"]
+      },
+      "comprendre": {
+        "présent": ["comprends", "comprends", "comprend", "comprenons", "comprenez", "comprenent"],
+        "passé_composé": ["ai compris", "as compris", "a compris", "avons compris", "avez compris", "ont compris"]
+      }
+    };
+
+    // Liste des pronoms
+    const pronouns = ["Je", "Tu", "Il/Elle", "Nous", "Vous", "Ils/Elles"];
+
+    // Variables
+    let currentVerb = "prendre"; // Par défaut, on choisit "prendre"
+    let currentPronounIndex;
+    let spinTimeout;
+
+    // Fonction pour faire tourner la roue
+    function spinWheel() {
+      // Sélectionner un pronom au hasard
+      currentPronounIndex = Math.floor(Math.random() * pronouns.length);
+
+      // Choisir un verbe au hasard
+      currentVerb = Object.keys(verbs)[Math.floor(Math.random() * Object.keys(verbs).length)];
+
+      // Récupérer le temps sélectionné (présent ou passé composé)
+      const selectedTime = document.getElementById('timeSelect').value;
+
+      // Appliquer la rotation de la roue
+      const angle = 360 * 3 + (currentPronounIndex * 60);
+      const wheel = document.querySelector(".wheel");
+      wheel.style.transform = `rotate(${angle}deg)`;
+
+      // Afficher la question après que la roue s'arrête
+      clearTimeout(spinTimeout);
+      spinTimeout = setTimeout(function() {
+        document.getElementById('result').innerText = `Conjuguez le verbe "${currentVerb}" au temps "${selectedTime}" avec "${pronouns[currentPronounIndex]}" :`;
+        document.getElementById('inputContainer').style.display = 'block'; // Afficher le champ de texte pour la réponse
+      }, 4000); // Temps pour arrêter la roue
+    }
+
+    // Fonction pour vérifier la réponse de l'élève
+    function checkAnswer() {
+      const answer = document.getElementById('conjugationAnswer').value.trim().toLowerCase();
+      const selectedTime = document.getElementById('timeSelect').value;
+      const correctAnswer = verbs[currentVerb][selectedTime][currentPronounIndex].toLowerCase();
+
+      if (answer === correctAnswer) {
+        alert("Bonne réponse !");
+      } else {
+        alert(`Mauvaise réponse. La bonne conjugaison est : ${correctAnswer}`);
+      }
+      document.getElementById('inputContainer').style.display = 'none'; // Masquer le champ de texte après la réponse
+    }
+  </script>
+  
+  <button class="back-button" onclick="goBack()"><a href="page jeuxoff.html">⬅ Retour</a></button>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+

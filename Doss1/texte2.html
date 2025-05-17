@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Magie de la conjugaison</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom, #d2c1e0, #f9e5d5); /* Arrière-plan doux avec un dégradé pastel */
+      text-align: center;
+      padding: 40px;
+      color: #3b3b3b;
+      background-image: url('https://www.transparenttextures.com/patterns/wood-fx.png'); /* Texture subtile */
+      background-size: 100px;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 40px;
+      color: #ff6f61; /* Rose vif */
+      margin-bottom: 30px;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    #question {
+      font-size: 24px;
+      margin: 20px 0;
+      background-color: #fff; 
+      color: #6c5b7b; 
+      padding: 20px;
+      border-radius: 20px;
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      position: relative;
+      animation: slideIn 1s ease-out;
+    }
+
+    input {
+      padding: 12px;
+      font-size: 18px;
+      margin: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 50%;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 20px;
+      margin: 15px;
+      border: none;
+      border-radius: 25px;
+      background-color: #ff9a8b;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background-color: #ff6f61;
+    }
+
+    #result {
+      font-size: 24px;
+      margin-top: 15px;
+      color: #e74c3c; 
+    }
+
+    #score {
+      font-size: 22px;
+      margin-top: 20px;
+      color: #f39c12; 
+    }
+
+    .magic-sparkle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 50px;
+      color: #ffeb3b;
+      animation: sparkle 1.5s infinite;
+    }
+
+    @keyframes sparkle {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.6; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    /* Animation de l'entrée de la question */
+    @keyframes slideIn {
+      from {
+        transform: translateY(-100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Animation pour les nuages flottants */
+    .clouds {
+      position: absolute;
+      top: 30px;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      animation: moveClouds 20s linear infinite;
+    }
+
+    .cloud {
+      position: absolute;
+      background: url('https://www.pngkit.com/png/detail/219-2196147_free-cloud-png-cloud-icon-png.png') no-repeat center;
+      background-size: contain;
+      width: 150px;
+      height: 100px;
+    }
+
+    @keyframes moveClouds {
+      0% { left: -200px; }
+      100% { left: 100%; }
+    }
+
+    /* Animation de personnages animaux flottants */
+    .animal {
+      position: absolute;
+      bottom: -50px;
+      animation: animalFly 10s ease-in-out infinite;
+    }
+
+    .animal img {
+      width: 60px;
+      animation-duration: 5s;
+    }
+
+    @keyframes animalFly {
+      0% { bottom: -50px; left: 10%; }
+      50% { bottom: 100px; left: 50%; }
+      100% { bottom: -50px; left: 90%; }
+    }
+
+  </style>
+</head>
+<body>
+
+<h1>Magie de la conjugaison</h1>
+
+<div id="question">Prépare-toi pour ton défi magique !</div>
+
+<input type="text" id="answer" placeholder="Ta réponse magique...">
+<button onclick="checkAnswer()">Compléter le sort !</button>
+
+<div id="result"></div>
+<div id="score">🌟 Score : 0</div>
+
+<!-- Ajout des éléments pour un environnement plus vivant -->
+<div class="clouds">
+  <div class="cloud" style="top: 20px; left: -150px; animation-delay: 2s;"></div>
+  <div class="cloud" style="top: 50px; left: -300px; animation-delay: 4s;"></div>
+</div>
+
+<!-- Animation d'animaux flottants -->
+<div class="animal" style="left: 10%; animation-delay: 1s;"><img src="https://img.icons8.com/ios/452/hedgehog.png" alt="Hérisson"></div>
+<div class="animal" style="left: 40%; animation-delay: 3s;"><img src="https://img.icons8.com/ios/452/squirrel.png" alt="Ecureuil"></div>
+<div class="animal" style="left: 70%; animation-delay: 5s;"><img src="https://img.icons8.com/ios/452/rabbit.png" alt="Lapin"></div>
+
+<script>
+  const questions = [
+    { phrase: "Je __________ (prendre) une baguette magique.", verbe: "prendre", temps: "présent", personne: "1ère personne du singulier", reponse: "prends" },
+    { phrase: "Nous __________ (prendre) un livre magique.", verbe: "prendre", temps: "présent", personne: "1ère personne du pluriel", reponse: "prenons" },
+    { phrase: "Tu __________ (apprendre) un nouveau sort.", verbe: "apprendre", temps: "présent", personne: "2ème personne du singulier", reponse: "apprends" },
+    { phrase: "Ils __________ (prendre) des potions magiques.", verbe: "prendre", temps: "présent", personne: "3ème personne du pluriel", reponse: "prennent" },
+    { phrase: "Il __________ (prendre) le chemin secret.", verbe: "prendre", temps: "passé composé", personne: "3ème personne du singulier", reponse: "a pris" },
+    { phrase: "Vous __________ (comprendre) la magie ancienne.", verbe: "comprendre", temps: "passé composé", personne: "2ème personne du pluriel", reponse: "avez compris" }
+  ];
+
+  let score = 0;
+  let currentQuestion = 0;
+
+  function displayQuestion() {
+    if (currentQuestion < questions.length) {
+      const question = questions[currentQuestion];
+      document.getElementById("question").innerText = `Complète cette phrase : "${question.phrase}"`;
+      document.getElementById("result").innerText = "";
+      document.getElementById("answer").value = "";
+    } else {
+      document.getElementById("question").innerText = "🎉 Félicitations, tu as terminé la quête magique !";
+      document.getElementById("result").innerText = "";
+    }
+  }
+
+  function checkAnswer() {
+    const userAnswer = document.getElementById("answer").value.toLowerCase().trim();
+    const correctAnswer = questions[currentQuestion].reponse.toLowerCase();
+
+    if (userAnswer === correctAnswer) {
+      score++;
+      document.getElementById("result").innerText = "✨ Bonne réponse, sort réussi !";
+      createSparkleEffect();
+    } else {
+      document.getElementById("result").innerText = "❌ Oups, c'est incorrect, réessaie.";
+    }
+
+    document.getElementById("score").innerText = `🌟 Score : ${score}`;
+    currentQuestion++;
+    setTimeout(displayQuestion, 1500);
+  }
+
+  function createSparkleEffect() {
+    const sparkle = document.createElement("div");
+    sparkle.classList.add("magic-sparkle");
+    sparkle.innerText = "✨";
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 1500);
+  }
+
+  // Initialiser le jeu
+  displayQuestion();
+</script>
+ <button class="back-button" onclick="goBack()"><a href="page jeuxoff.html">⬅ Retour</a></button>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

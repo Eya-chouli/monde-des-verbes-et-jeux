@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeux de Conjugaison</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #ffe0f0, #e0f7ff);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #ff4081;
+      text-shadow: 2px 2px 4px #aaa;
+    }
+
+    .lettre-3d {
+      display: inline-block;
+      color: #fff;
+      padding: 10px;
+      margin: 0 5px;
+      font-size: 2em;
+      font-weight: bold;
+      text-shadow: 2px 2px 0 #000, 4px 4px 0 #aaa;
+      border-radius: 8px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .game-box {
+      width: 250px;
+      height: 200px;
+      background-color: #fff0c1;
+      border-radius: 20px;
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .game-box:hover {
+      transform: scale(1.05);
+      box-shadow: 6px 6px 20px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="lettre-3d" style="background-color: #f44336;">J</span>
+    <span class="lettre-3d" style="background-color: #e91e63;">E</span>
+    <span class="lettre-3d" style="background-color: #9c27b0;">U</span>
+    <span class="lettre-3d" style="background-color: #3f51b5;">X</span>
+    <span> de Conjugaison</span>
+  </header>
+
+  <div class="container">
+    <div class="game-box" onclick="jeu1()">Jeu 1</div>
+    <div class="game-box" onclick="jeu2()">Jeu 2</div>
+    <div class="game-box" onclick="jeu3()">Jeu 3</div>
+  </div>
+
+  <script>
+    function jeu1() {
+      alert("Jeu 1 lancé !");
+      // Ici tu peux ajouter ton code de jeu en JS
+    }
+
+    function jeu2() {
+      alert("Jeu 2 lancé !");
+    }
+
+    function jeu3() {
+      alert("Jeu 3 lancé !");
+    }
+  </script>
+</body>
+</html>

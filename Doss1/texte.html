@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeu des œufs cassés - Glisser déposer</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #ff4081;
+    }
+
+    #score {
+      font-size: 20px;
+      color: #2e7d32;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .half-egg {
+      width: 110px;
+      height: 70px;
+      border: 2px dashed #ffb74d;
+      background-color: #fff8dc;
+      border-radius: 50% 50% 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: grab;
+      user-select: none;
+      transition: 0.2s;
+    }
+
+    .half-egg.bottom {
+      border-radius: 0 0 50% 50%;
+      border-top: none;
+    }
+
+    .half-egg.dragging {
+      opacity: 0.6;
+    }
+
+    .half-egg.correct {
+      background-color: #c8e6c9;
+      border-color: #4caf50;
+      animation: pop 0.4s;
+    }
+
+    .half-egg.wrong {
+      background-color: #ffcdd2;
+      border-color: #e53935;
+      animation: shake 0.3s;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🐣 Associe les moitiés d'œuf !</h1>
+  <div id="score">Score : 0</div>
+  <div class="container" id="top-halves"></div>
+  <div class="container" id="bottom-halves"></div>
+
+  <script>
+    const pronoms = ["je", "tu", "il/elle", "nous", "vous", "ils/elles"];
+    const verbes = [
+      {
+        infinitif: "apprendre",
+        present: ["apprends", "apprends", "apprend", "apprenons", "apprenez", "apprennent"],
+        passe: ["ai appris", "as appris", "a appris", "avons appris", "avez appris", "ont appris"]
+      },
+      {
+        infinitif: "comprendre",
+        present: ["comprends", "comprends", "comprend", "comprenons", "comprenez", "comprennent"],
+        passe: ["ai compris", "as compris", "a compris", "avons compris", "avez compris", "ont compris"]
+      },
+      {
+        infinitif: "reprendre",
+        present: ["reprends", "reprends", "reprend", "reprenons", "reprenez", "reprennent"],
+        passe: ["ai repris", "as repris", "a repris", "avons repris", "avez repris", "ont repris"]
+      }
+    ];
+
+    let score = 0;
+
+    function nouvellePartie() {
+      const topContainer = document.getElementById("top-halves");
+      const bottomContainer = document.getElementById("bottom-halves");
+      topContainer.innerHTML = "";
+      bottomContainer.innerHTML = "";
+
+      const paires = [];
+
+      for (let i = 0; i < 4; i++) {
+        const verbe = verbes[Math.floor(Math.random() * verbes.length)];
+        const temps = Math.random() < 0.5 ? "present" : "passe";
+        const pronomIndex = Math.floor(Math.random() * pronoms.length);
+        const pronom = pronoms[pronomIndex];
+        const verbeForme = verbe[temps][pronomIndex];
+        const id = `${pronom}_${verbeForme}`;
+        paires.push({ pronom, verbe: verbeForme, id });
+      }
+
+      const topMelange = [...paires].sort(() => Math.random() - 0.5);
+      const bottomMelange = [...paires].sort(() => Math.random() - 0.5);
+
+      topMelange.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "half-egg top";
+        div.textContent = p.pronom;
+        div.dataset.id = p.id;
+        div.ondragover = e => e.preventDefault();
+        div.ondrop = e => handleDrop(e, div);
+        topContainer.appendChild(div);
+      });
+
+      bottomMelange.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "half-egg bottom";
+        div.textContent = p.verbe;
+        div.dataset.id = p.id;
+        div.draggable = true;
+        div.ondragstart = e => {
+          e.dataTransfer.setData("text/plain", div.dataset.id);
+          div.classList.add("dragging");
+        };
+        div.ondragend = () => div.classList.remove("dragging");
+        bottomContainer.appendChild(div);
+      });
+    }
+
+    function handleDrop(e, target) {
+      const idDragged = e.dataTransfer.getData("text/plain");
+      const idTarget = target.dataset.id;
+
+      const draggedElement = [...document.querySelectorAll(".half-egg.bottom")].find(el => el.dataset.id === idDragged);
+
+      if (idDragged === idTarget) {
+        // Bonne association
+        target.classList.add("correct");
+        draggedElement.classList.add("correct");
+        target.ondrop = null;
+        draggedElement.draggable = false;
+        score++;
+        document.getElementById("score").textContent = `Score : ${score}`;
+        setTimeout(() => {
+          target.remove();
+          draggedElement.remove();
+          if (document.querySelectorAll(".half-egg.bottom").length === 0) {
+            setTimeout(nouvellePartie, 1000);
+          }
+        }, 800);
+      } else {
+        // Mauvaise association
+        target.classList.add("wrong");
+        draggedElement.classList.add("wrong");
+        setTimeout(() => {
+          target.classList.remove("wrong");
+          draggedElement.classList.remove("wrong");
+        }, 500);
+      }
+    }
+
+    nouvellePartie();
+  </script>
+</body>
+</html>
+
+

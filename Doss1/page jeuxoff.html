@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeux de Conjugaison</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #ffb6c1, #add8e6);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px #444;
+    }
+
+    .lettres-decoration {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 10px;
+    }
+
+    .lettre-3d {
+      display: inline-block;
+      color: #fff;
+      padding: 10px;
+      margin: 0 5px;
+      font-size: 2em;
+      font-weight: bold;
+      text-shadow: 2px 2px 0 #000, 4px 4px 0 #555;
+      border-radius: 8px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .game-box {
+      width: 250px;
+      height: 220px;
+      background-color: #d1c4e9;
+      border-radius: 20px;
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      padding: 10px;
+    }
+
+    .game-box:hover {
+      transform: scale(1.05);
+      box-shadow: 6px 6px 20px rgba(0,0,0,0.5);
+    }
+
+    .game-box img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 10px;
+    }
+
+    .game-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+      color: #2e1f47;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="lettres-decoration">
+      <span class="lettre-3d" style="background-color: #f44336;">C</span>
+      <span class="lettre-3d" style="background-color: #e91e63;">O</span>
+      <span class="lettre-3d" style="background-color: #9c27b0;">N</span>
+      <span class="lettre-3d" style="background-color: #673ab7;">J</span>
+      <span class="lettre-3d" style="background-color: #3f51b5;">U</span>
+      <span class="lettre-3d" style="background-color: #2196f3;">G</span>
+      <span class="lettre-3d" style="background-color: #009688;">A</span>
+      <span class="lettre-3d" style="background-color: #4caf50;">I</span>
+      <span class="lettre-3d" style="background-color: #ff9800;">S</span>
+      <span class="lettre-3d" style="background-color: #795548;">O</span>
+      <span class="lettre-3d" style="background-color: #607d8b;">N</span>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="game-box" onclick="jeu2()">
+      <img src="roue.png" alt="Jeu 2">
+      <div class="game-title">La roue de conjugaison</div>
+    </div>
+
+    <div class="game-box" onclick="jeu3()">
+      <img src="quiz.png" alt="Jeu 3">
+      <div class="game-title">Quiz</div>
+    </div>
+
+    <!-- Ajout des nouvelles cases -->
+    <div class="game-box" onclick="jeu4()">
+      <img src="flash cards.png" alt="Jeu 4">
+      <div class="game-title">Flash cards</div>
+    </div>
+
+    <div class="game-box" onclick="jeu5()">
+      <img src="magic.png" alt="Jeu 5">
+      <div class="game-title">Magie de conjugaison</div>
+    </div>
+
+  <script>
+
+    function jeu2() {
+      window.location.href = "roue de conjugaison.html";  // Redirige vers la page du jeu "La roue de la conjugaison"
+    }
+
+    function jeu3() {
+      window.location.href = "https://wordwall.net/resource/90969198"; // Remplace "https://wordwall.net/resource/xxx" par le lien de ton jeu Wordwall
+    }
+
+    // Fonctions pour les nouveaux jeux
+      function jeu4() {
+    window.location.href = "https://wordwall.net/resource/91194709"; // Remplace "https://wordwall.net/resource/xxx" par le lien de ton jeu Wordwall
+}
+
+  
+
+ function jeu5() {
+  window.location.href = "texte2.html"; // Remplace cette URL par celle de ton jeu ou page
+}
+
+  </script>
+</body>
+</html>
+
+
+

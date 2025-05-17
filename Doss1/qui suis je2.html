@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qui suis-je ? - Jeu de conjugaison</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
+        
+        body {
+            font-family: 'Bubblegum Sans', cursive;
+            background: linear-gradient(135deg, #ff6ec4 0%, #7873f5 100%);
+            text-align: center;
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        h1 {
+            color: #fff;
+            font-size: 3.5em;
+            text-shadow: 4px 4px 0 #ff6b6b, 8px 8px 0 #f7b733;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+        
+        .game-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border: 8px solid #4ecdc4;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-container::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+            z-index: -1;
+            border-radius: 40px;
+            animation: gradientBG 15s ease infinite;
+            background-size: 400% 400%;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .question {
+            font-size: 1.8em;
+            color: #6a3093;
+            margin-bottom: 30px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            border: 4px dotted #f7b733;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .question::after {
+            content: "❓";
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 1.5em;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 5px 0 #ff4757;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 0 #ff4757;
+        }
+        
+        .option:active {
+            transform: translateY(2px);
+            box-shadow: 0 3px 0 #ff4757;
+        }
+        
+        .option::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transform: translateX(-100%);
+            transition: all 0.3s;
+        }
+        
+        .option:hover::before {
+            transform: translateX(0);
+        }
+        
+        .result {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 20px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border-radius: 15px;
+        }
+        
+        .correct {
+            background-color: rgba(46, 213, 115, 0.3);
+            color: #2ed573;
+            border: 3px dashed #2ed573;
+        }
+        
+        .incorrect {
+            background-color: rgba(255, 71, 87, 0.3);
+            color: #ff4757;
+            border: 3px dashed #ff4757;
+        }
+        
+        .score {
+            font-size: 1.8em;
+            color: #6a3093;
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 50px;
+            display: inline-block;
+            border: 4px solid #f7b733;
+        }
+        
+        .emoji {
+            font-size: 2.5em;
+            margin: 0 15px;
+            vertical-align: middle;
+        }
+        
+        .next-btn {
+            background: linear-gradient(to right, #a18cd1, #fbc2eb);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            display: none;
+            font-weight: bold;
+            box-shadow: 0 5px 0 #8e44ad;
+            transition: all 0.3s;
+        }
+        
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 0 #8e44ad;
+        }
+        
+        .next-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 3px 0 #8e44ad;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: fall 5s linear infinite;
+            z-index: 1000;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            color: #fff;
+            font-size: 1.5em;
+            animation: twinkle 2s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+
+        /* Flèche pour passer au jeu suivant */
+        #arrow-next {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(to right, #a18cd1, #fbc2eb);
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            font-size: 2em;
+            z-index: 100;
+            display: none; /* La flèche est cachée par défaut */
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <h1>✨ Qui suis-je ? ✨</h1>
+    
+    <div class="game-container">
+        <div class="question" id="question"></div>
+        
+        <div class="options" id="options"></div>
+        
+        <div class="result" id="result"></div>
+        
+        <button class="next-btn" id="next-btn">Suivant 🚀</button>
+        
+        <div class="score" id="score">Score: 0/0</div>
+        
+        <!-- Flèche pour passer au jeu suivant -->
+        <div id="arrow-next" title="Jeu suivant">➡️</div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "🖊️ Je fais des mots avec le stylo...",
+                options: ["écrire", "lire", "dire"],
+                answer: "écrire"
+            },
+            {
+                question: "📖 Je regarde les lettres et je comprends...",
+                options: ["lire", "écrire", "dire"],
+                answer: "lire"
+            },
+            {
+                question: "🗣️ J'utilise ma bouche pour parler...",
+                options: ["dire", "écrire", "lire"],
+                answer: "dire"
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        let totalQuestions = questions.length;
+        
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const resultElement = document.getElementById('result');
+        const nextButton = document.getElementById('next-btn');
+        const scoreElement = document.getElementById('score');
+        const starsContainer = document.getElementById('stars');
+        const arrowNext = document.getElementById('arrow-next');
+        
+        // Créer des étoiles animées
+        function createStars() {
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.innerHTML = '⭐';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            questionElement.textContent = q.question;
+            
+            optionsElement.innerHTML = '';
+            q.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('option');
+                button.addEventListener('click', () => checkAnswer(option));
+                optionsElement.appendChild(button);
+            });
+            
+            resultElement.textContent = '';
+            resultElement.className = 'result';
+            nextButton.style.display = 'none';
+            arrowNext.style.display = 'none'; // Cache la flèche initialement
+        }
+        
+        function checkAnswer(selectedOption) {
+            const correctAnswer = questions[currentQuestion].answer;
+            const allButtons = document.querySelectorAll('.option');
+            
+            allButtons.forEach(button => {
+                button.disabled = true;
+                if (button.textContent === correctAnswer) {
+                    button.style.background = 'linear-gradient(to right, #2ed573, #7bed9f)';
+                    button.style.boxShadow = '0 5px 0 #2ed573';
+                } else if (button.textContent === selectedOption && selectedOption !== correctAnswer) {
+                    button.style.background = 'linear-gradient(to right, #ff4757, #ff6b81)';
+                    button.style.boxShadow = '0 5px 0 #ff4757';
+                }
+            });
+            
+            if (selectedOption === correctAnswer) {
+                resultElement.innerHTML = "Bravo ! Correct ! 🎉🌈";
+                resultElement.className = 'result correct';
+                score++;
+            } else {
+                resultElement.innerHTML = `Oups ! La réponse était <strong>"${correctAnswer}"</strong>. 😊✨`;
+                resultElement.className = 'result incorrect';
+            }
+            
+            scoreElement.textContent = `Score: ${score}/${totalQuestions}`;
+            
+            // Afficher la flèche pour passer à la question suivante
+            arrowNext.style.display = 'flex';
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                questionElement.textContent = "🎊 Félicitations ! Tu as terminé le jeu ! 🎊";
+                optionsElement.innerHTML = '';
+                resultElement.innerHTML = `Ton score final: <span style="font-size:1.5em">${score}/${totalQuestions}</span>`;
+                arrowNext.style.display = 'none'; // Masque la flèche à la fin du jeu
+            }
+        }
+        
+        // Ajouter l'événement pour passer à la question suivante avec la flèche
+        arrowNext.addEventListener('click', nextQuestion);
+        
+        createStars();
+        loadQuestion();
+    </script>
+</body>
+</html>

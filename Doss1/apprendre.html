@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Conjugaison Magique</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive;
+      background-image: url('aklam.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cloud-container, .group-container {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .cloud, .group {
+      background: #ffffffdd;
+      border-radius: 50%;
+      padding: 30px 50px;
+      text-align: center;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transition: transform 0.4s ease, background 0.4s;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .cloud:hover, .group:hover {
+      transform: scale(1.1) rotate(2deg);
+      background: #f0f8ff;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .info-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      width: 360px;
+      display: none;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      animation: fadeIn 0.5s ease forwards;
+      margin-top: 20px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+    }
+
+    ul li {
+      background: #d1ecf1;
+      margin: 5px;
+      padding: 6px;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 8px 15px;
+      background-color: #FF69B4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .back-home {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      background-color: #9370DB;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="cloud-container">
+    <div class="cloud" data-tense="present">⏰ Présent</div>
+    <div class="cloud" data-tense="passe">🕰️ Passé Composé</div>
+    <div class="cloud" data-tense="futur">🔮 Futur</div>
+  </div>
+
+  <div class="group-container" id="groupContainer" style="display:none;">
+    <div class="group" data-group="1er">1er Groupe</div>
+    <div class="group" data-group="2e">2e Groupe</div>
+    <div class="group" data-group="3e">3e Groupe</div>
+  </div>
+
+  <div class="info-box" id="infoBox">
+    <h2 id="groupTitle"></h2>
+    <p id="ruleText"></p>
+    <ul id="endingsList"></ul>
+    <button onclick="hideInfo()">Fermer ✖</button>
+  </div>
+
+  <a class="back-home" href="site2.html">⬅ Retour à l’accueil</a>
+
+  <script>
+    let selectedTense = "";
+
+    const rules = {
+      present: {
+        "1er": {
+          title: "Présent - 1er Groupe",
+          rule: "Les verbes du 1er groupe (en -ER) suivent une conjugaison régulière au présent.",
+          endings: [
+            "Je parle", "Tu parles", "Il/Elle parle",
+            "Nous parlons", "Vous parlez", "Ils/Elles parlent"
+          ]
+        },
+        "2e": {
+          title: "Présent - 2e Groupe",
+          rule: "Les verbes du 2e groupe (en -IR) avec participe présent en -issant.",
+          endings: [
+            "Je finis", "Tu finis", "Il/Elle finit",
+            "Nous finissons", "Vous finissez", "Ils/Elles finissent"
+          ]
+        },
+        "3e": {
+          title: "Présent - 3e Groupe",
+          rule: "Les verbes du 3e groupe sont irréguliers et ont des terminaisons variées.",
+          endings: [
+            "Je prends", "Tu dis", "Il/Elle vient",
+            "Nous faisons", "Vous dites", "Ils/Elles vont"
+          ]
+        }
+      },
+      passe: {
+        "1er": {
+          title: "Passé Composé - 1er Groupe",
+          rule: "Avoir au présent + participe passé (-é).",
+          endings: [
+            "J'ai parlé", "Tu as parlé", "Il/Elle a parlé",
+            "Nous avons parlé", "Vous avez parlé", "Ils/Elles ont parlé"
+          ]
+        },
+        "2e": {
+          title: "Passé Composé - 2e Groupe",
+          rule: "Avoir au présent + participe passé (-i).",
+          endings: [
+            "J'ai fini", "Tu as fini", "Il/Elle a fini",
+            "Nous avons fini", "Vous avez fini", "Ils/Elles ont fini"
+          ]
+        },
+        "3e": {
+          title: "Passé Composé - 3e Groupe",
+          rule: "Avoir ou être au présent + participe passé irrégulier.",
+          endings: [
+            "J'ai pris", "Tu as dit", "Il/Elle est venu(e)",
+            "Nous avons fait", "Vous avez lu", "Ils/Elles sont allés"
+          ]
+        }
+      },
+      futur: {
+        "1er": {
+          title: "Futur - 1er Groupe",
+          rule: "Infinitif + terminaisons du futur (-ai, -as, -a, -ons, -ez, -ont).",
+          endings: [
+            "Je parlerai", "Tu parleras", "Il/Elle parlera",
+            "Nous parlerons", "Vous parlerez", "Ils/Elles parleront"
+          ]
+        },
+        "2e": {
+          title: "Futur - 2e Groupe",
+          rule: "Infinitif + terminaisons du futur.",
+          endings: [
+            "Je finirai", "Tu finiras", "Il/Elle finira",
+            "Nous finirons", "Vous finirez", "Ils/Elles finiront"
+          ]
+        },
+        "3e": {
+          title: "Futur - 3e Groupe",
+          rule: "Radicaux irréguliers + terminaisons du futur.",
+          endings: [
+            "Je viendrai", "Tu feras", "Il/Elle dira",
+            "Nous irons", "Vous aurez", "Ils/Elles seront"
+          ]
+        }
+      }
+    };
+
+    document.querySelectorAll('.cloud').forEach(cloud => {
+      cloud.addEventListener('click', () => {
+        selectedTense = cloud.dataset.tense;
+        document.getElementById('groupContainer').style.display = 'flex';
+        document.getElementById('infoBox').style.display = 'none';
+      });
+    });
+
+    document.querySelectorAll('.group').forEach(group => {
+      group.addEventListener('click', () => {
+        const groupKey = group.dataset.group;
+        const data = rules[selectedTense][groupKey];
+        document.getElementById('groupTitle').textContent = data.title;
+        document.getElementById('ruleText').textContent = data.rule;
+
+        const list = document.getElementById('endingsList');
+        list.innerHTML = '';
+        data.endings.forEach(ending => {
+          const li = document.createElement('li');
+          li.textContent = ending;
+          list.appendChild(li);
+        });
+
+        document.getElementById('infoBox').style.display = 'block';
+      });
+    });
+
+    function hideInfo() {
+      document.getElementById('infoBox').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

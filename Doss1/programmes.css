@@ -1,0 +1,115 @@
+body {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(to bottom right, #fceabb, #f8b500);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #4b0082;
+  margin: 30px 0;
+  font-size: 2.5rem;
+  animation: slideInTop 1s ease-out;
+}
+
+.lessons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  width: 90%;
+  max-width: 1200px;
+  flex-grow: 1;
+  margin-bottom: 60px;
+}
+
+.card {
+  background: linear-gradient(145deg, #f7d9ff, #e0b3ff);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1.3rem;
+  animation: fadeInUp 1s ease-out;
+  text-align: center;
+}
+
+.card:hover {
+  transform: scale(1.07) rotate(-1deg);
+  box-shadow: 0px 0px 25px #ff6ec4;
+  animation: bounce 0.4s ease-in-out;
+}
+
+.card span {
+  color: #ff1493;
+  font-weight: bold;
+}
+
+/* Bouton Retour */
+.back-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px; /* 👈 Bouton à gauche */
+  background: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 25px;
+  font-size: 1.1rem;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.back-button:hover {
+  background: #ff1493;
+  transform: scale(1.1);
+}
+.back-button:hover {
+  background: #ff1493;
+  transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes bounce {
+  0% { transform: scale(1.05); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1.07); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInTop {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.lessons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  width: 90%;
+  max-width: 1200px;
+  flex-grow: 1;
+  margin-bottom: 60px;
+}
